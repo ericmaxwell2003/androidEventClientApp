@@ -1,11 +1,11 @@
-package event.credible.software.eventclientapp.activity.remote;
+package event.credible.software.eventclientapp.remote;
 
 import java.util.List;
 
-import event.credible.software.eventclientapp.activity.remote.dto.EventDto;
-import event.credible.software.eventclientapp.activity.remote.dto.LoginDto;
-import event.credible.software.eventclientapp.activity.remote.dto.OAuthTokenDto;
-import event.credible.software.eventclientapp.activity.remote.dto.RegistrationDto;
+import event.credible.software.eventclientapp.remote.dto.EventDto;
+import event.credible.software.eventclientapp.remote.dto.LoginDto;
+import event.credible.software.eventclientapp.remote.dto.OAuthTokenDto;
+import event.credible.software.eventclientapp.remote.dto.RegistrationDto;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
@@ -16,7 +16,7 @@ public interface EventService {
     @POST("/register")
     RegistrationDto register(@Body RegistrationDto registrationDto);
 
-    @POST("/login")
+    @POST("/goToLogin")
     OAuthTokenDto login(@Body LoginDto loginDto);
 
     @GET("/events")

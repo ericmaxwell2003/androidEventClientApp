@@ -1,24 +1,28 @@
-package event.credible.software.eventclientapp.activity.activity;
+package event.credible.software.eventclientapp.activity;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import event.credible.software.eventclientapp.R;
+import event.credible.software.eventclientapp.activity.helper.RoboAppCompatActivity;
+import roboguice.inject.ContentView;
 
-public class EventsActivity extends AppCompatActivity {
+@ContentView(R.layout.activity_main)
+public class LaunchActivity extends RoboAppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_events);
+        Intent intent = new Intent(this, LoginActivity.class);
+        startActivity(intent);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_events, menu);
+        getMenuInflater().inflate(R.menu.menu_main, menu);
         return true;
     }
 

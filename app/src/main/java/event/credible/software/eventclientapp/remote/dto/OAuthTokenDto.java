@@ -1,4 +1,4 @@
-package event.credible.software.eventclientapp.activity.remote.dto;
+package event.credible.software.eventclientapp.remote.dto;
 
 import com.google.gson.annotations.SerializedName;
 

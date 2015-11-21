@@ -1,6 +1,5 @@
 <resources>
-    <string name="app_name">EventClientApp</string>
-    <string name="title_activity_events">EventsActivity</string>
+    <string name="app_name">Event Client App Android</string>
 
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
