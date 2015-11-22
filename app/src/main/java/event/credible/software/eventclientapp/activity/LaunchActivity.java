@@ -15,7 +15,7 @@ public class LaunchActivity extends RoboAppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this, LoginActivity.class);
+        Intent intent = new Intent(this, BrowseEventsActivity.class);
         startActivity(intent);
     }
 

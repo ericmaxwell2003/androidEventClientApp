@@ -2,7 +2,7 @@ package event.credible.software.eventclientapp.remote;
 
 import java.util.List;
 
-import event.credible.software.eventclientapp.remote.dto.EventDto;
+import event.credible.software.eventclientapp.domain.Event;
 import event.credible.software.eventclientapp.remote.dto.LoginDto;
 import event.credible.software.eventclientapp.remote.dto.OAuthTokenDto;
 import event.credible.software.eventclientapp.remote.dto.RegistrationDto;
@@ -20,9 +20,9 @@ public interface EventService {
     OAuthTokenDto login(@Body LoginDto loginDto);
 
     @GET("/events")
-    List<EventDto> fetchEvents();
+    List<Event> fetchEvents();
 
     @GET("/event/{id}")
-    EventDto fetchDetail(@Path("id") String eventId);
+    Event fetchDetail(@Path("id") String eventId);
 
 }
