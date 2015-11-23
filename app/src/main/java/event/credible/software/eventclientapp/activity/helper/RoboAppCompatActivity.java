@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import roboguice.RoboGuice;
 import roboguice.activity.RoboFragmentActivity;
 
 /**
@@ -39,6 +40,7 @@ public class RoboAppCompatActivity extends RoboFragmentActivity implements AppCo
         getDelegate().installViewFactory();
         getDelegate().onCreate(savedInstanceState);
         super.onCreate(savedInstanceState);
+        RoboGuice.getInjector(this).injectViewMembers(this);
     }
 
     @Override

@@ -1,6 +1,8 @@
 package event.credible.software.eventclientapp.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -8,8 +10,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import javax.inject.Inject;
+
 import event.credible.software.eventclientapp.R;
 import event.credible.software.eventclientapp.activity.helper.RoboAppCompatActivity;
+import event.credible.software.eventclientapp.remote.AuthenticationService;
+import event.credible.software.eventclientapp.remote.dto.LoginDto;
+import event.credible.software.eventclientapp.remote.dto.OAuthTokenDto;
+import event.credible.software.eventclientapp.remote.dto.RegistrationDto;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 
@@ -18,14 +26,22 @@ public class SignupActivity extends RoboAppCompatActivity {
 
     private static final String TAG = "SignupActivity";
 
+    @Inject private AuthenticationService authenticationService;
+
     @InjectView(R.id.input_name) EditText nameText;
     @InjectView(R.id.input_email) EditText emailText;
+    @InjectView(R.id.input_username) EditText userName;
     @InjectView(R.id.input_password) EditText passwordText;
     @InjectView(R.id.btn_signup) Button signupButton;
+
+    private ProgressDialog progressDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        progressDialog = new ProgressDialog(this, R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Creating Account...");
     }
 
     public void goToLogin(View view) {
@@ -36,78 +52,56 @@ public class SignupActivity extends RoboAppCompatActivity {
     public void performSignUp(View view) {
         Log.d(TAG, "Signup");
 
-        if (!validate()) {
-            onSignupFailed();
-            return;
+        showProgress();
+
+        String name = nameText.getText().toString();
+        String email = emailText.getText().toString();
+        String username = userName.getText().toString();
+        String password = passwordText.getText().toString();
+
+        SignUpTask signUpTask = new SignUpTask();
+        signUpTask.execute(name, email, username, password);
+    }
+
+
+    private class SignUpTask extends AsyncTask<String, Void, RegistrationDto> {
+
+        @Override
+        protected RegistrationDto doInBackground(String... registrationDetails) {
+            RegistrationDto registrationDto = new RegistrationDto();
+            registrationDto.setFullName(registrationDetails[0]);
+            registrationDto.setEmail(registrationDetails[1]);
+            registrationDto.setUsername(registrationDetails[2]);
+            registrationDto.setPassword(registrationDetails[3]);
+            try {
+                registrationDto = authenticationService.register(registrationDto);
+            } catch (Exception e) {
+                Log.e(TAG, e.getMessage());
+            }
+            return registrationDto;
         }
 
+        @Override
+        protected void onPostExecute(RegistrationDto registrationDto) {
+            hideProgress();
+            if(registrationDto == null) {
+                Toast.makeText(getBaseContext(), "Signup failed", Toast.LENGTH_LONG).show();
+            } else {
+                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        }
+    };
+
+    private void showProgress() {
         signupButton.setEnabled(false);
-
-        final ProgressDialog progressDialog = new ProgressDialog(SignupActivity.this,
-                R.style.AppTheme);
-        progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Creating Account...");
         progressDialog.show();
-
-        String name = nameText.getText().toString();
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
-
-        // TODO: Implement your own signup logic here.
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignupSuccess or onSignupFailed
-                        // depending on success
-                        onSignupSuccess();
-                        // onSignupFailed();
-                        progressDialog.dismiss();
-                    }
-                }, 3000);
     }
 
-
-    public void onSignupSuccess() {
+    private void hideProgress() {
         signupButton.setEnabled(true);
-        setResult(RESULT_OK, null);
-        finish();
+        progressDialog.dismiss();
     }
 
-    public void onSignupFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
-        signupButton.setEnabled(true);
-    }
-
-    public boolean validate() {
-        boolean valid = true;
-
-        String name = nameText.getText().toString();
-        String email = emailText.getText().toString();
-        String password = passwordText.getText().toString();
-
-        if (name.isEmpty() || name.length() < 3) {
-            nameText.setError("at least 3 characters");
-            valid = false;
-        } else {
-            nameText.setError(null);
-        }
-
-        if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            emailText.setError("enter a valid email address");
-            valid = false;
-        } else {
-            emailText.setError(null);
-        }
-
-        if (password.isEmpty() || password.length() < 4 || password.length() > 10) {
-            passwordText.setError("between 4 and 10 alphanumeric characters");
-            valid = false;
-        } else {
-            passwordText.setError(null);
-        }
-
-        return valid;
-    }
 }

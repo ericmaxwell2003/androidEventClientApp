@@ -2,42 +2,37 @@ package event.credible.software.eventclientapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
+import android.text.TextUtils;
+
+import javax.inject.Inject;
 
 import event.credible.software.eventclientapp.R;
 import event.credible.software.eventclientapp.activity.helper.RoboAppCompatActivity;
+import event.credible.software.eventclientapp.remote.TokenHolder;
 import roboguice.inject.ContentView;
 
-@ContentView(R.layout.activity_main)
+@ContentView(R.layout.activity_launch)
 public class LaunchActivity extends RoboAppCompatActivity {
+
+    @Inject
+    private TokenHolder tokenHolder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Intent intent = new Intent(this, BrowseEventsActivity.class);
-        startActivity(intent);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        Intent intent = null;
+        // If we don't have a token, yet proceed to the login page.
+        if(isOauthTokenPresent()) {
+            intent = new Intent(this, BrowseEventsActivity.class);
+        } else {
+            intent = new Intent(this, LoginActivity.class);
         }
-
-        return super.onOptionsItemSelected(item);
+        startActivity(intent);
+        finish();
     }
+
+    private boolean isOauthTokenPresent() {
+        return tokenHolder.getToken() != null && TextUtils.isEmpty(tokenHolder.getToken().getAccessToken());
+    }
+
 }
