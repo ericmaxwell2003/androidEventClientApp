@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/androidEventClientApp.iml" filepath="$PROJECT_DIR$/androidEventClientApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AndroidEventClientApp.iml" filepath="$PROJECT_DIR$/AndroidEventClientApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>

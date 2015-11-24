@@ -12,7 +12,7 @@ import retrofit.client.OkClient;
 
 public class ServiceGenerator {
 
-    private static final String API_BASE_URL = "http://192.168.56.1:8080";
+    private static final String API_BASE_URL = "http://192.168.57.1:8080";
 
     public static <S> S createService(Class<S> serviceClass, final TokenHolder tokenHolder) {
 
