@@ -11,10 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import event.credible.software.eventclientapp.R;
-import event.credible.software.eventclientapp.domain.Event;
 import event.credible.software.eventclientapp.remote.dto.EventDto;
-import io.realm.Realm;
-import io.realm.RealmResults;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder> {
     private LayoutInflater layoutInflater;
