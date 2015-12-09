@@ -7,46 +7,45 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import event.credible.software.eventclientapp.R;
 import event.credible.software.eventclientapp.domain.Event;
+import event.credible.software.eventclientapp.remote.dto.EventDto;
 import io.realm.Realm;
 import io.realm.RealmResults;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder> {
-    private LayoutInflater mInflater;
-    private RealmAdapter<Event> realmBaseAdapter;
+    private LayoutInflater layoutInflater;
+    private List<EventDto> events = new ArrayList<>();
 
-    public EventAdapter(Context context, Realm realm, boolean automaticUpdate) {
-        realmBaseAdapter = new RealmAdapter<Event>(context, realm, automaticUpdate);
-        mInflater = LayoutInflater.from(context);
-    }
-
-    public Event getItem(int position) {
-        return realmBaseAdapter.getItem(position);
+    public EventAdapter(Context context) {
+        layoutInflater = LayoutInflater.from(context);
     }
 
     @Override
     public EventHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = mInflater.inflate(R.layout.event_item, parent, false);
+        View view = layoutInflater.inflate(R.layout.event_item, parent, false);
         EventHolder eventHolder = new EventHolder(view);
         return eventHolder;
     }
 
     @Override
     public void onBindViewHolder(EventHolder holder, int position) {
-        Event event = realmBaseAdapter.getItem(position);
+        EventDto event = events.get(position);
         holder.setDetails(event.getDetails());
         holder.setSummary(event.getSummary());
     }
 
-    public void setResults(RealmResults<Event> results) {
-        realmBaseAdapter.setResults(results);
+    public void prependResults(List<EventDto> results) {
+        this.events.addAll(0, results);
         notifyDataSetChanged();
     }
 
     @Override
     public int getItemCount() {
-        return realmBaseAdapter.getCount();
+        return events == null ? 0 : events.size();
     }
 
     public static class EventHolder extends RecyclerView.ViewHolder {

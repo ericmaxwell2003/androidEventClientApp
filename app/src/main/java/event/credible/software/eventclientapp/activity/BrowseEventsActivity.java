@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -19,11 +20,10 @@ import javax.inject.Inject;
 import event.credible.software.eventclientapp.R;
 import event.credible.software.eventclientapp.activity.adapter.EventAdapter;
 import event.credible.software.eventclientapp.activity.helper.RoboAppCompatActivity;
-import event.credible.software.eventclientapp.domain.Event;
 import event.credible.software.eventclientapp.remote.EventService;
 import event.credible.software.eventclientapp.remote.TokenHolder;
 import event.credible.software.eventclientapp.remote.dto.EventDto;
-import io.realm.Realm;
+import event.credible.software.eventclientapp.remote.dto.EventSearchResultDto;
 import roboguice.inject.ContentView;
 
 @ContentView(R.layout.activity_browse_events)
@@ -31,7 +31,6 @@ public class BrowseEventsActivity extends RoboAppCompatActivity  {
 
     private static final String TAG = "BrowseEventsActivity";
 
-    private Realm realm;
     private EventAdapter adapter;
     private RecyclerView recycler;
     private boolean isFetching;
@@ -39,6 +38,7 @@ public class BrowseEventsActivity extends RoboAppCompatActivity  {
     private ProgressDialog progressDialog;
     @Inject private EventService eventService;
     @Inject private TokenHolder tokenHolder;
+    private String lastSyncToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,19 +48,12 @@ public class BrowseEventsActivity extends RoboAppCompatActivity  {
         progressDialog.setIndeterminate(true);
         progressDialog.setMessage("Fetching New Events...");
 
-        realm = Realm.getInstance(this);
-        adapter = new EventAdapter(this, realm, true);
-        adapter.setResults(realm.where(Event.class).findAll());
+        adapter = new EventAdapter(this);
+        fetchNewEvents();
 
         recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter);
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        realm.close();
     }
 
     @Override
@@ -73,10 +66,7 @@ public class BrowseEventsActivity extends RoboAppCompatActivity  {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_refresh:
-                if(!isFetching) { // don't fetch if in the middle of fetching.
-                    FetchEventsTask fetchEventsTask = new FetchEventsTask();
-                    fetchEventsTask.execute();
-                }
+                fetchNewEvents();
                 return true;
             case R.id.action_logout:
                 tokenHolder.setToken(null);
@@ -89,7 +79,14 @@ public class BrowseEventsActivity extends RoboAppCompatActivity  {
         }
     }
 
-    private class FetchEventsTask extends AsyncTask<Void, Void, Boolean> {
+    private void fetchNewEvents() {
+        if(!isFetching) { // don't fetch if in the middle of fetching.
+            FetchEventsTask fetchEventsTask = new FetchEventsTask();
+            fetchEventsTask.execute();
+        }
+    }
+
+    private class FetchEventsTask extends AsyncTask<Void, Void, List<EventDto>> {
 
         @Override
         protected void onPreExecute() {
@@ -98,38 +95,27 @@ public class BrowseEventsActivity extends RoboAppCompatActivity  {
         }
 
         @Override
-        protected Boolean doInBackground(Void... params) {
-            boolean wasSuccess = true;
+        protected List<EventDto> doInBackground(Void... params) {
             try {
-                List<EventDto> events = eventService.fetchEvents();
-                try(Realm r = Realm.getInstance(BrowseEventsActivity.this)) {
-                    r.beginTransaction();
-                    r.clear(Event.class);
-                    for(EventDto dto : events) {
-                        Event e = new Event();
-                        e.setGuid(dto.getGuid());
-                        e.setDetails(dto.getDetails());
-                        e.setSummary(dto.getSummary());
-                        r.copyToRealm(e);
-                    }
-                    r.commitTransaction();
-                }
+                EventSearchResultDto result = eventService.fetchEvents(lastSyncToken);
+                lastSyncToken = result.getSyncToken();
+                return result.getEvents();
+
             } catch (Exception e) {
                 Log.e(TAG, e.getMessage());
-                wasSuccess = false;
             }
-            return wasSuccess;
+            return new ArrayList<>();
         }
 
         @Override
-        protected void onPostExecute(Boolean success) {
+        protected void onPostExecute(List<EventDto> eventDtos) {
             hideProgress();
             isFetching = false;
-            if(success) {
-                adapter.setResults(realm.where(Event.class).findAll());
+            if(!eventDtos.isEmpty()) {
+                adapter.prependResults(eventDtos);
                 adapter.notifyDataSetChanged();
             } else {
-                Toast.makeText(BrowseEventsActivity.this, "Error Fetching Events", Toast.LENGTH_SHORT).show();
+                Toast.makeText(BrowseEventsActivity.this, "No Events Returned", Toast.LENGTH_SHORT).show();
             }
         }
     }
