@@ -7,8 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import event.credible.software.eventclientapp.R;
 import event.credible.software.eventclientapp.remote.dto.EventDto;
@@ -33,6 +36,8 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
         EventDto event = events.get(position);
         holder.setDetails(event.getDetails());
         holder.setSummary(event.getSummary());
+        holder.setDateOfEvent(event.getEventDate());
+
     }
 
     public void prependResults(List<EventDto> results) {
@@ -48,11 +53,15 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
     public static class EventHolder extends RecyclerView.ViewHolder {
         private TextView summary;
         private TextView details;
+        private TextView dayOfMonth;
+        private TextView monthName;
 
         public EventHolder(View itemView) {
             super(itemView);
             summary = (TextView) itemView.findViewById(R.id.summary);
             details = (TextView) itemView.findViewById(R.id.details);
+            dayOfMonth = (TextView) itemView.findViewById(R.id.dayOfMonth);
+            monthName = (TextView) itemView.findViewById(R.id.monthName);
         }
 
         public void setSummary(String text) {
@@ -61,6 +70,12 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder>
 
         public void setDetails(String text) {
             details.setText(text);
+        }
+        public void setDateOfEvent(Date date) {
+            SimpleDateFormat sdf = new SimpleDateFormat("MMM:dd", Locale.US);
+            String[] dateParts = sdf.format(date).split(":");
+            monthName.setText(dateParts[0]);
+            dayOfMonth.setText(dateParts[1]);
         }
     }
 }

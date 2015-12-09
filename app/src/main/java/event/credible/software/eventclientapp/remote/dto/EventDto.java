@@ -1,6 +1,6 @@
 package event.credible.software.eventclientapp.remote.dto;
 
-import io.realm.annotations.Required;
+import java.util.Date;
 
 public class EventDto {
 
@@ -8,8 +8,7 @@ public class EventDto {
     private String url;
     private String summary;
     private String details;
-    private String thumbnailImgUrl;
-    private String detailImgUrl;
+    private Date eventDate;
 
     public String getGuid() {
         return guid;
@@ -43,19 +42,11 @@ public class EventDto {
         this.details = details;
     }
 
-    public String getThumbnailImgUrl() {
-        return thumbnailImgUrl;
+    public Date getEventDate() {
+        return eventDate;
     }
 
-    public void setThumbnailImgUrl(String thumbnailImgUrl) {
-        this.thumbnailImgUrl = thumbnailImgUrl;
-    }
-
-    public String getDetailImgUrl() {
-        return detailImgUrl;
-    }
-
-    public void setDetailImgUrl(String detailImgUrl) {
-        this.detailImgUrl = detailImgUrl;
+    public void setEventDate(Date eventDate) {
+        this.eventDate = eventDate;
     }
 }
