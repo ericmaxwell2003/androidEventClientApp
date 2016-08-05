@@ -1,5 +1,6 @@
 package software.credible.eventclientapp;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
@@ -13,6 +14,16 @@ public class EventModule extends AbstractModule {
 
     @Override
     protected void configure() {
+    }
+
+    @Provides
+    public FirebaseAuth firebaseAuthProvider() {
+        try {
+            return FirebaseAuth.getInstance();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     @Provides

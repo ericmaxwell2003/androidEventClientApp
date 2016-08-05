@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "206190712405",
+    "firebase_url": "https://eventsapp-8c5f9.firebaseio.com",
+    "project_id": "eventsapp-8c5f9",
+    "storage_bucket": "eventsapp-8c5f9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:206190712405:android:732d445979f66997",
+        "android_client_info": {
+          "package_name": "software.credible.eventclientapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "206190712405-nu3qn120cje88oude9966uich1j8ro6c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC3xeVkS25yrfGbYxmI4MJ10IX5V7vWO7A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

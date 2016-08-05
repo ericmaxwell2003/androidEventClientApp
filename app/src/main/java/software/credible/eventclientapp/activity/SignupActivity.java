@@ -4,19 +4,24 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import javax.inject.Inject;
 
 import software.credible.eventclientapp.R;
 import software.credible.eventclientapp.activity.helper.RoboAppCompatActivity;
-import software.credible.eventclientapp.remote.AuthenticationService;
-import software.credible.eventclientapp.remote.dto.LoginDto;
-import software.credible.eventclientapp.remote.dto.OAuthTokenDto;
 import software.credible.eventclientapp.remote.dto.RegistrationDto;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
@@ -26,11 +31,9 @@ public class SignupActivity extends RoboAppCompatActivity {
 
     private static final String TAG = "SignupActivity";
 
-    @Inject private AuthenticationService authenticationService;
+    @Inject private FirebaseAuth firebaseAuth;
 
-    @InjectView(R.id.input_name) EditText nameText;
     @InjectView(R.id.input_email) EditText emailText;
-    @InjectView(R.id.input_username) EditText userName;
     @InjectView(R.id.input_password) EditText passwordText;
     @InjectView(R.id.btn_signup) Button signupButton;
 
@@ -49,50 +52,37 @@ public class SignupActivity extends RoboAppCompatActivity {
         finish();
     }
 
-    public void performSignUp(View view) {
+    public void performSignUp(final View view) {
         Log.d(TAG, "Signup");
 
         showProgress();
 
-        String name = nameText.getText().toString();
         String email = emailText.getText().toString();
-        String username = userName.getText().toString();
         String password = passwordText.getText().toString();
 
-        SignUpTask signUpTask = new SignUpTask();
-        signUpTask.execute(name, email, username, password);
+        firebaseAuth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+                        hideProgress();
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Toast.makeText(SignupActivity.this, "Signup Failed", Toast.LENGTH_SHORT).show();
+                        } else {
+                            goToLogin(view);
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                e.printStackTrace();
+            }
+        });
     }
-
-
-    private class SignUpTask extends AsyncTask<String, Void, RegistrationDto> {
-
-        @Override
-        protected RegistrationDto doInBackground(String... registrationDetails) {
-            RegistrationDto registrationDto = new RegistrationDto();
-            registrationDto.setFullName(registrationDetails[0]);
-            registrationDto.setEmail(registrationDetails[1]);
-            registrationDto.setUsername(registrationDetails[2]);
-            registrationDto.setPassword(registrationDetails[3]);
-            try {
-                registrationDto = authenticationService.register(registrationDto);
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            }
-            return registrationDto;
-        }
-
-        @Override
-        protected void onPostExecute(RegistrationDto registrationDto) {
-            hideProgress();
-            if(registrationDto == null) {
-                Toast.makeText(getBaseContext(), "Signup failed", Toast.LENGTH_LONG).show();
-            } else {
-                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-        }
-    };
 
     private void showProgress() {
         signupButton.setEnabled(false);

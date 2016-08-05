@@ -33,4 +33,9 @@ dependencies {
     // RoboGuice
     compile 'org.roboguice:roboguice:3.0.1'
     provided 'org.roboguice:roboblender:3.0.1'
+
+    // Google Services
+    compile 'com.google.firebase:firebase-auth:9.4.0'
 }
+
+apply plugin: 'com.google.gms.google-services'
