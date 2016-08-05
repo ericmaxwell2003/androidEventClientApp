@@ -1,8 +1,8 @@
-package event.credible.software.eventclientapp.remote;
+package software.credible.eventclientapp.remote;
 
 import javax.inject.Singleton;
 
-import event.credible.software.eventclientapp.remote.dto.OAuthTokenDto;
+import software.credible.eventclientapp.remote.dto.OAuthTokenDto;
 
 @Singleton
 public class TokenHolder {

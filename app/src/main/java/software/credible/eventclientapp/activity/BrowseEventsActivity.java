@@ -1,4 +1,4 @@
-package event.credible.software.eventclientapp.activity;
+package software.credible.eventclientapp.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -17,13 +17,13 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import event.credible.software.eventclientapp.R;
-import event.credible.software.eventclientapp.activity.adapter.EventAdapter;
-import event.credible.software.eventclientapp.activity.helper.RoboAppCompatActivity;
-import event.credible.software.eventclientapp.remote.EventService;
-import event.credible.software.eventclientapp.remote.TokenHolder;
-import event.credible.software.eventclientapp.remote.dto.EventDto;
-import event.credible.software.eventclientapp.remote.dto.EventSearchResultDto;
+import software.credible.eventclientapp.R;
+import software.credible.eventclientapp.activity.adapter.EventAdapter;
+import software.credible.eventclientapp.activity.helper.RoboAppCompatActivity;
+import software.credible.eventclientapp.remote.EventService;
+import software.credible.eventclientapp.remote.TokenHolder;
+import software.credible.eventclientapp.remote.dto.EventDto;
+import software.credible.eventclientapp.remote.dto.EventSearchResultDto;
 import roboguice.inject.ContentView;
 
 @ContentView(R.layout.activity_browse_events)

@@ -1,4 +1,4 @@
-package event.credible.software.eventclientapp.activity;
+package software.credible.eventclientapp.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,9 +6,9 @@ import android.text.TextUtils;
 
 import javax.inject.Inject;
 
-import event.credible.software.eventclientapp.R;
-import event.credible.software.eventclientapp.activity.helper.RoboAppCompatActivity;
-import event.credible.software.eventclientapp.remote.TokenHolder;
+import software.credible.eventclientapp.R;
+import software.credible.eventclientapp.activity.helper.RoboAppCompatActivity;
+import software.credible.eventclientapp.remote.TokenHolder;
 import roboguice.inject.ContentView;
 
 @ContentView(R.layout.activity_launch)

@@ -1,13 +1,13 @@
-package event.credible.software.eventclientapp;
+package software.credible.eventclientapp;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
 
-import event.credible.software.eventclientapp.remote.AuthenticationService;
-import event.credible.software.eventclientapp.remote.EventService;
-import event.credible.software.eventclientapp.remote.ServiceGenerator;
-import event.credible.software.eventclientapp.remote.TokenHolder;
+import software.credible.eventclientapp.remote.AuthenticationService;
+import software.credible.eventclientapp.remote.EventService;
+import software.credible.eventclientapp.remote.ServiceGenerator;
+import software.credible.eventclientapp.remote.TokenHolder;
 
 public class EventModule extends AbstractModule {
 

@@ -1,4 +1,4 @@
-package event.credible.software.eventclientapp.remote;
+package software.credible.eventclientapp.remote;
 
 import com.squareup.okhttp.OkHttpClient;
 

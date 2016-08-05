@@ -1,4 +1,4 @@
-package event.credible.software.eventclientapp.remote;
+package software.credible.eventclientapp.remote;
 
 import android.app.Application;
 
@@ -7,8 +7,8 @@ import com.squareup.okhttp.OkHttpClient;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import event.credible.software.eventclientapp.BuildConfig;
-import event.credible.software.eventclientapp.remote.dto.OAuthTokenDto;
+import software.credible.eventclientapp.BuildConfig;
+import software.credible.eventclientapp.remote.dto.OAuthTokenDto;
 import retrofit.RequestInterceptor;
 import retrofit.RestAdapter;
 import retrofit.client.OkClient;

@@ -1,4 +1,4 @@
-package event.credible.software.eventclientapp.remote.dto;
+package software.credible.eventclientapp.remote.dto;
 
 import java.util.List;
 

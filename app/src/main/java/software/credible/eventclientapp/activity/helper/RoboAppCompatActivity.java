@@ -1,4 +1,4 @@
-package event.credible.software.eventclientapp.activity.helper;
+package software.credible.eventclientapp.activity.helper;
 
 import android.content.Intent;
 import android.content.res.Configuration;

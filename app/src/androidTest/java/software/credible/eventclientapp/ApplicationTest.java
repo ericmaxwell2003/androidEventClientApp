@@ -1,4 +1,4 @@
-package event.credible.software.eventclientapp;
+package software.credible.eventclientapp;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

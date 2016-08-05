@@ -1,4 +1,4 @@
-package event.credible.software.eventclientapp.activity.adapter;
+package software.credible.eventclientapp.activity.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import event.credible.software.eventclientapp.R;
-import event.credible.software.eventclientapp.remote.dto.EventDto;
+import software.credible.eventclientapp.R;
+import software.credible.eventclientapp.remote.dto.EventDto;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventHolder> {
     private LayoutInflater layoutInflater;

@@ -1,4 +1,4 @@
-package event.credible.software.eventclientapp.activity;
+package software.credible.eventclientapp.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,12 +12,12 @@ import android.widget.Toast;
 
 import javax.inject.Inject;
 
-import event.credible.software.eventclientapp.R;
-import event.credible.software.eventclientapp.activity.helper.RoboAppCompatActivity;
-import event.credible.software.eventclientapp.remote.AuthenticationService;
-import event.credible.software.eventclientapp.remote.dto.LoginDto;
-import event.credible.software.eventclientapp.remote.dto.OAuthTokenDto;
-import event.credible.software.eventclientapp.remote.dto.RegistrationDto;
+import software.credible.eventclientapp.R;
+import software.credible.eventclientapp.activity.helper.RoboAppCompatActivity;
+import software.credible.eventclientapp.remote.AuthenticationService;
+import software.credible.eventclientapp.remote.dto.LoginDto;
+import software.credible.eventclientapp.remote.dto.OAuthTokenDto;
+import software.credible.eventclientapp.remote.dto.RegistrationDto;
 import roboguice.inject.ContentView;
 import roboguice.inject.InjectView;
 

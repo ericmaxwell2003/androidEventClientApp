@@ -1,6 +1,6 @@
-package event.credible.software.eventclientapp.remote;
+package software.credible.eventclientapp.remote;
 
-import event.credible.software.eventclientapp.remote.dto.EventSearchResultDto;
+import software.credible.eventclientapp.remote.dto.EventSearchResultDto;
 import retrofit.http.GET;
 import retrofit.http.Query;
 
